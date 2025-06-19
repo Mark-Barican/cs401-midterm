@@ -2,18 +2,33 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Model
 {
-    public function student(): HasOne
-    {
-        return $this->hasOne(Student::class);
-    }
+    use HasFactory;
 
-    public function teacher(): HasOne
+    public $timestamps = false;
+
+    protected $fillable = [
+        'first_name',
+        'last_name', 
+        'user_name',
+        'password',
+        'registration_date',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    protected $casts = [
+        'registration_date' => 'datetime',
+    ];
+
+    public function getFullNameAttribute(): string
     {
-        return $this->hasOne(Teacher::class);
+        return $this->first_name . ' ' . $this->last_name;
     }
 }
